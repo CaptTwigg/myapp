@@ -26,9 +26,9 @@ public class SeekBarAndText extends AppCompatActivity {
       @Override
       public void onProgressChanged(SeekBar seekBar, int progress,
                                     boolean fromUser) {
-        value = progress;
-        seekBarValue.setText(String.valueOf(progress));
-        System.out.println(progress);
+        value = progress -60;
+        seekBarValue.setText(String.valueOf(value));
+        System.out.println(value);
 
       }
 
@@ -60,7 +60,7 @@ public class SeekBarAndText extends AppCompatActivity {
     runOnUiThread(new Runnable() {
       @Override
       public void run() {
-        ftv.append(ftext);
+        ftv.setText(ftext);
       }
     });
   }

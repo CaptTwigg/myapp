@@ -8,8 +8,6 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -22,7 +20,6 @@ import android.widget.TextView;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +33,22 @@ public class MainActivity extends AppCompatActivity {
   UsbDeviceConnection connection;
   static TextView serialView;
   static String user = "1";
+  int value;
 
+
+  UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() { //Defining a Callback which triggers whenever data is read.
+    @Override
+    public void onReceivedData(byte[] arg0) {
+      String data = null;
+      try {
+        data = new String(arg0, "UTF-8");
+        data.concat("/n");
+        //tvAppend(serialView, data+"\n");
+      } catch (UnsupportedEncodingException e) {
+        e.printStackTrace();
+      }
+    }
+  };
 
   private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() { //Broadcast Receiver to automatically start and stop the Serial connection.
     @Override
@@ -53,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
               serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
               serialPort.setParity(UsbSerialInterface.PARITY_NONE);
               serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
+              serialPort.read(mCallback);
               tvAppend(serialView, "\nSerial Connection Opened\n");
 
             } else {
@@ -85,12 +98,15 @@ public class MainActivity extends AppCompatActivity {
     filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
     registerReceiver(broadcastReceiver, filter);
 
-    new SeekBarAndText((SeekBar) findViewById(R.id.seekBar),
-      (TextView) findViewById(R.id.textView),
-      "TG0");
-    new SeekBarAndText((SeekBar) findViewById(R.id.seekBar2),
-      (TextView) findViewById(R.id.textView2),
-      "TG1");
+    new SeekBarAndText((SeekBar) findViewById(R.id.sidetoneSeekBar), (TextView) findViewById(R.id.sidetoneTextView), "sidetone");
+    new SeekBarAndText((SeekBar) findViewById(R.id.TG0SeekBar), (TextView) findViewById(R.id.TG0TextView), "tg0");
+    new SeekBarAndText((SeekBar) findViewById(R.id.TG1SeekBar), (TextView) findViewById(R.id.TG1TextView), "tg1");
+    new SeekBarAndText((SeekBar) findViewById(R.id.TG2SeekBar), (TextView) findViewById(R.id.TG2TextView), "tg2");
+    new SeekBarAndText((SeekBar) findViewById(R.id.comg1SeekBar), (TextView) findViewById(R.id.comg1TextView), "comg1");
+    new SeekBarAndText((SeekBar) findViewById(R.id.comg2SeekBar), (TextView) findViewById(R.id.comg2TextView), "comg2");
+    new SeekBarAndText((SeekBar) findViewById(R.id.comg3SeekBar), (TextView) findViewById(R.id.comg3TextView), "comg3");
+    new SeekBarAndText((SeekBar) findViewById(R.id.comg4SeekBar), (TextView) findViewById(R.id.comg4TextView), "comg4");
+
 
   }
 
