@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
       try {
         data = new String(arg0, "UTF-8");
         data.concat("/n");
-        //tvAppend(serialView, data+"\n");
+        tvAppend(serialView, data+"\n");
       } catch (UnsupportedEncodingException e) {
         e.printStackTrace();
       }
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
           serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
           if (serialPort != null) {
             if (serialPort.open()) { //Set Serial Connection Parameters.
-              serialPort.setBaudRate(9600);
+              serialPort.setBaudRate(115200);
               serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
               serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
               serialPort.setParity(UsbSerialInterface.PARITY_NONE);
@@ -102,10 +102,10 @@ public class MainActivity extends AppCompatActivity {
     new SeekBarAndText((SeekBar) findViewById(R.id.TG0SeekBar), (TextView) findViewById(R.id.TG0TextView), "tg0");
     new SeekBarAndText((SeekBar) findViewById(R.id.TG1SeekBar), (TextView) findViewById(R.id.TG1TextView), "tg1");
     new SeekBarAndText((SeekBar) findViewById(R.id.TG2SeekBar), (TextView) findViewById(R.id.TG2TextView), "tg2");
-    new SeekBarAndText((SeekBar) findViewById(R.id.comg1SeekBar), (TextView) findViewById(R.id.comg1TextView), "comg1");
-    new SeekBarAndText((SeekBar) findViewById(R.id.comg2SeekBar), (TextView) findViewById(R.id.comg2TextView), "comg2");
-    new SeekBarAndText((SeekBar) findViewById(R.id.comg3SeekBar), (TextView) findViewById(R.id.comg3TextView), "comg3");
-    new SeekBarAndText((SeekBar) findViewById(R.id.comg4SeekBar), (TextView) findViewById(R.id.comg4TextView), "comg4");
+    new SeekBarAndText((SeekBar) findViewById(R.id.comg1SeekBar), (TextView) findViewById(R.id.comg1TextView), "comgrp1");
+    new SeekBarAndText((SeekBar) findViewById(R.id.comg2SeekBar), (TextView) findViewById(R.id.comg2TextView), "comgrp2");
+    new SeekBarAndText((SeekBar) findViewById(R.id.comg3SeekBar), (TextView) findViewById(R.id.comg3TextView), "comgrp3");
+    new SeekBarAndText((SeekBar) findViewById(R.id.comg4SeekBar), (TextView) findViewById(R.id.comg4TextView), "comgrp4");
 
 
   }
@@ -118,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
       for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
         device = entry.getValue();
         int deviceVID = device.getVendorId();
-        if (deviceVID == 0x2A03)//Arduino Vendor ID
+       // if (deviceVID == 0x2A03)//Arduino Vendor ID
+        if (deviceVID == 0x1A86)//Arduino Vendor ID
         {
           PendingIntent pi = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
           usbManager.requestPermission(device, pi);

@@ -41,13 +41,13 @@ public class SeekBarAndText extends AppCompatActivity {
       public void onStopTrackingTouch(SeekBar seekBar) {
         user = MainActivity.getUser();
         serialPort = MainActivity.getSerialPort();
-        String set = String.format("set dyna %s vol %s %s",
+        String set = String.format("set dyna vol %s %s %s",
           user, sliderName, String.valueOf(value));
 
         if (serialPort != null)
           serialPort.write(set.getBytes());
 
-        tvAppend(MainActivity.getSerialView(), String.format("\nset dyna %s vol %s %s",
+        tvAppend(MainActivity.getSerialView(), String.format("\nset dyna vol %s %s %s",
           user, sliderName, String.valueOf(value)));
       }
     });
